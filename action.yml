@@ -1,0 +1,15 @@
+name: "Firebase Functions Mapper"
+description: "Maps file names to function names and generates Firebase CLI command for function deployment"
+inputs:
+  filenames:
+    description: List of files containing functions
+    required: true
+  map-file:
+    description: Path to a JSON file containing the function mapping
+    required: true
+outputs:
+  deploy-cmd:
+    description: "The command used to deploy the functions in the specified files"
+runs:
+  using: "node20"
+  main: "index.js"
