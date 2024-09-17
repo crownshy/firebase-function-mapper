@@ -1,17 +1,6 @@
 const fs = require("fs");
 
-function run() {
-  const argv = require("yargs/yargs")(process.argv.slice(2))
-    .boolean("force")
-    .array("files")
-    .array("groups")
-    .array("names")
-    .parse();
-  const files = argv.files;
-  const grps = argv.groups;
-  const fnxnNames = argv.names;
-  const force = argv.force;
-  const mapfile = argv.mapfile;
+function run(force, mapfile, files, grps, fnxnNames) {
   if (mapfile) var mappings = JSON.parse(fs.readFileSync(mapfile, "utf8"));
 
   var subsetSelected = (files || grps || fnxnNames) ?? false;
@@ -21,24 +10,27 @@ function run() {
   deploycmd = deploycmd.concat("--only ");
 
   if (files) {
-    console.log(`got some files ${files}`);
-    const fnxns = map_files(mappings, files);
+    console.log(`Mapping files: ${files}`);
+    const filenames = files.split(" ");
+    const fnxns = map_files(mappings, filenames);
     deploycmd = deploycmd.concat(fnxns);
   }
   if (grps) {
-    console.log(`got some groups ${grps}`);
-    const fnxns = map_groups(mappings, grps);
+    console.log(`Mapping groups: ${grps}`);
+    const grpnames = grps.split(" ");
+    const fnxns = map_groups(mappings, grpnames);
     deploycmd = deploycmd.concat(fnxns);
   }
   if (fnxnNames) {
-    console.log(`got some names ${fnxnNames}`);
-    const fnxns = build_command(fnxnNames);
+    console.log(`Using function names: ${fnxnNames}`);
+    const fnxnArry = fnxnNames.split(" ");
+    const fnxns = build_command(fnxnArry);
     deploycmd = deploycmd.concat(fnxns);
   }
 
   if (!subsetSelected) {
     if (mapfile) {
-      //deploy each group in batches
+      console.log("Mapping function deployment in batches");
       var groupNames = Object.keys(mappings.groups);
       const fnxns = build_command(mappings.groups[groupNames[0]]);
       deploycmd = deploycmd.concat(fnxns);
@@ -58,6 +50,7 @@ function run() {
         deploycmd = deploycmd.concat(";");
       });
     } else {
+      console.log("Building command to deploy all functions");
       deploycmd = deploycmd.concat("functions,");
     }
   }

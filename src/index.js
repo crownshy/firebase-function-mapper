@@ -1,9 +1,15 @@
 const { run } = require("./function-mapper");
-const fs = require("fs");
+const core = require("@actions/core");
 
-const outputValue = run();
+const force = core.getInput("force");
+const mapfile = core.getInput("mapping-file");
+const files = core.getInput("files");
+const groups = core.getInput("files");
+const names = core.getInput("names");
 
-const githubOutputFilePath = process.env.GITHUB_OUTPUT;
-if (githubOutputFilePath) {
-  fs.appendFileSync(githubOutputFilePath, `DEPLOY_CMD=${outputValue}\n`);
+try {
+  const outputValue = run(force, mapfile, files, groups, names);
+  core.setOutput("deploy-command", outputValue);
+} catch (error) {
+  core.setFailed(error.message);
 }
