@@ -23,17 +23,18 @@ runs:
     - name: Install NPM Dependencies
       uses: actions/setup-node@v4
       with:
-          node-version: 20
+        node-version: 20
+
     - run: npm ci
-     
-     - name: Create Deployment Command
-       id: function-deploy-cmd
-       run: node index.js --mapfile=${{ inputs.mapping-file }} --files ${{ inputs.files }} --names ${{ inputs.names }} --groups ${{ inputs.groups }} --force=${{ inputs.force }} #TODO set up node or assume it's there? How to parse nothing
-       shell: bash
+      shell: bash
 
-     - name: Deploy Functions
-        uses: w9jds/firebase-action@master
-        with:
-          args: ${{ steps.function-deploy-cmd.outputs.DEPLOY_CMD }} #TODO does env just get passed thru?
+    - name: Create Deployment Command
+      id: function-deploy-cmd
+      run: node index.js --mapfile=${{ inputs.mapping-file }} --files ${{ inputs.files }} --names ${{ inputs.names }} --groups ${{ inputs.groups }} --force=${{ inputs.force }} #TODO set up node or assume it's there? How to parse nothing
+      shell: bash
 
+    - name: Deploy Functions
+      uses: w9jds/firebase-action@master
+      with:
+        args: ${{ steps.function-deploy-cmd.outputs.DEPLOY_CMD }} #TODO does env just get passed thru?
 
