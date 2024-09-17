@@ -8,7 +8,7 @@ describe("files specfied", () => {
       "client/functions/lib/functions/on_firestore/on_discussion_thread_comment.dart client/functions/lib/functions/on_call/resolve_join_request.dart";
     const response = mapper.run(false, mapfile, filenames, "", "");
     expect(response).to.equal(
-      "deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest"
+      "firebase deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest"
     );
   });
 
@@ -17,7 +17,7 @@ describe("files specfied", () => {
       "client/functions/lib/functions/on_firestore/on_discussion_thread_comment.dart client/functions/lib/functions/on_call/resolve_join_request.dart";
     const response = mapper.run(true, mapfile, filenames, "", "");
     expect(response).to.equal(
-      "deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest"
+      "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest"
     );
   });
   // TODO no files behind --files, nonexistent filename, etc
@@ -28,7 +28,7 @@ describe("groups specfied", () => {
     const groups = "discussion communities";
     const response = mapper.run(false, mapfile, "", groups, "");
     expect(response).to.equal(
-      "deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto"
+      "firebase deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto"
     );
   });
 
@@ -36,7 +36,7 @@ describe("groups specfied", () => {
     const groups = "discussion communities";
     const response = mapper.run(true, mapfile, "", groups, "");
     expect(response).to.equal(
-      "deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto"
+      "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto"
     );
   });
   // TODO no groups behind --groups, nonexistent groupname, etc
@@ -47,7 +47,7 @@ describe("names specfied", () => {
     const names = "doTheThing doAnotherThing doAllTheThings";
     const response = mapper.run(false, mapfile, "", "", names);
     expect(response).to.equal(
-      "deploy --only functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
+      "firebase deploy --only functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
     );
   });
 
@@ -55,7 +55,7 @@ describe("names specfied", () => {
     const names = "doTheThing doAnotherThing doAllTheThings";
     const response = mapper.run(true, mapfile, "", "", names);
     expect(response).to.equal(
-      "deploy --force --only functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
+      "firebase deploy --force --only functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
     );
   });
   // TODO no groups behind --groups, nonexistent groupname, etc
@@ -64,24 +64,24 @@ describe("names specfied", () => {
 describe("nothing specfied", () => {
   it("should deploy all functions if no mapfile", function () {
     const response = mapper.run(false, "", "", "", "");
-    expect(response).to.equal("deploy --only functions");
+    expect(response).to.equal("firebase deploy --only functions");
   });
 
   it("should add force option when specified", function () {
     const response = mapper.run(true, "", "", "", "");
-    expect(response).to.equal("deploy --force --only functions");
+    expect(response).to.equal("firebase deploy --force --only functions");
   });
 
   it("should deploy in batches if mapfile given", function () {
     const response = mapper.run(false, mapfile, "", "", "");
     expect(response).to.equal(
-      "deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete;firebase deploy --only functions:resolveJoinRequest,functions:createJunto;firebase deploy --only functions:scheduleEvent"
+      "firebase deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete;firebase deploy --only functions:resolveJoinRequest,functions:createJunto;firebase deploy --only functions:scheduleEvent"
     );
   });
   it("should force deploy in batches if mapfile given", function () {
     const response = mapper.run(true, mapfile, "", "", "");
     expect(response).to.equal(
-      "deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete;firebase deploy --force --only functions:resolveJoinRequest,functions:createJunto;firebase deploy --force --only functions:scheduleEvent"
+      "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete;firebase deploy --force --only functions:resolveJoinRequest,functions:createJunto;firebase deploy --force --only functions:scheduleEvent"
     );
   });
 });
@@ -92,7 +92,7 @@ describe("combo specfied", () => {
     const groups = "communities";
     const response = mapper.run(false, mapfile, "", groups, names);
     expect(response).to.equal(
-      "deploy --only functions:resolveJoinRequest,functions:createJunto,functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
+      "firebase deploy --only functions:resolveJoinRequest,functions:createJunto,functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
     );
   });
 
@@ -103,7 +103,7 @@ describe("combo specfied", () => {
       "client/functions/lib/functions/on_firestore/on_discussion_thread_comment.dart";
     const response = mapper.run(false, mapfile, files, groups, names);
     expect(response).to.equal(
-      "deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto,functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
+      "firebase deploy --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto,functions:doTheThing,functions:doAnotherThing,functions:doAllTheThings"
     );
   });
 });

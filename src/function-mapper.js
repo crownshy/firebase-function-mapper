@@ -5,7 +5,7 @@ function run(force, mapfile, files, grps, fnxnNames) {
 
   var subsetSelected = (files || grps || fnxnNames) ?? false;
 
-  let deploycmd = "deploy ";
+  let deploycmd = "firebase deploy ";
   if (force) deploycmd = deploycmd.concat("--force ");
   deploycmd = deploycmd.concat("--only ");
 
