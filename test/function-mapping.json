@@ -1,0 +1,12 @@
+{
+   "files" : {
+   "client/functions/lib/functions/on_firestore/on_discussion_thread_comment.dart": ["DiscussionThreadCommentOnCreate","DiscussionThreadCommentOnUpdate","DiscussionThreadCommentOnDelete"],
+   "client/functions/lib/functions/on_call/resolve_join_request.dart": ["resolveJoinRequest"]
+   },
+   "groups" : {
+      "discussion": ["DiscussionThreadCommentOnCreate","DiscussionThreadCommentOnUpdate","DiscussionThreadCommentOnDelete"],
+      "communities" : ["resolveJoinRequest", "createJunto"],
+      "events": ["scheduleEvent"]
+   }
+  
+}

@@ -1,15 +1,39 @@
-name: "Firebase Functions Mapper"
-description: "Maps file names to function names and generates Firebase CLI command for function deployment"
+name: "Firebase Functions Deployer"
+description: "Deploys Firebase functions by using an optional map of file names to function names and/or group names to function names"
 inputs:
-  filenames:
-    description: List of files containing functions
-    required: true
-  map-file:
-    description: Path to a JSON file containing the function mapping
-    required: true
-outputs:
-  deploy-cmd:
-    description: "The command used to deploy the functions in the specified files"
+  mapping-file:
+    description: Location of the file containing the mapping of file and/or group names to function names
+    required: false
+  files:
+    description: List of files containing functions to deploy
+    required: false
+  names:
+    description: List of function names to deploy
+    required: false
+  groups:
+    description: List of groups to deploy
+    required: false
+  force:
+    description: Force function deployment
+    required: false
+    default: false
 runs:
-  using: "node20"
-  main: "index.js"
+  using: composite
+  steps:
+    - name: Install NPM Dependencies
+      uses: actions/setup-node@v4
+      with:
+          node-version: 20
+    - run: npm ci
+     
+     - name: Create Deployment Command
+       id: function-deploy-cmd
+       run: node index.js --mapfile=${{ inputs.mapping-file }} --files ${{ inputs.files }} --names ${{ inputs.names }} --groups ${{ inputs.groups }} --force=${{ inputs.force }} #TODO set up node or assume it's there? How to parse nothing
+       shell: bash
+
+     - name: Deploy Functions
+        uses: w9jds/firebase-action@master
+        with:
+          args: ${{ steps.function-deploy-cmd.outputs.DEPLOY_CMD }} #TODO does env just get passed thru?
+
+
