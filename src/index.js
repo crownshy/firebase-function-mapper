@@ -4,7 +4,7 @@ const core = require("@actions/core");
 const force = core.getInput("force");
 const mapfile = core.getInput("mapping-file");
 const files = core.getInput("files");
-const groups = core.getInput("files");
+const groups = core.getInput("groups");
 const names = core.getInput("names");
 
 try {
