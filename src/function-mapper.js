@@ -62,9 +62,11 @@ function map_files(mappings, files) {
   let fnxns = "";
   files.forEach(function (filename) {
     const functionNames = mappings.files[filename];
-    fnxns = fnxns.concat(build_command(functionNames));
-    // TODO what to do if file not found?
-    // console.log("Skipping ${filename}. Not found in the mapping file.");
+    if (functionNames) {
+      fnxns = fnxns.concat(build_command(functionNames));
+    } else {
+      console.log(`Skipping file ${filename}. Not found in the mapping file.`);
+    }
   });
   return fnxns;
 }
@@ -74,9 +76,13 @@ function map_groups(mappings, grps) {
   grps.forEach(function (groupname) {
     console.log(`group name ${groupname}`);
     const functionNames = mappings.groups[groupname];
-    fnxns = fnxns.concat(build_command(functionNames));
-    // TODO what to do if file not found?
-    // console.log("Skipping ${filename}. Not found in the mapping file.");
+    if (functionNames) {
+      fnxns = fnxns.concat(build_command(functionNames));
+    } else {
+      console.log(
+        `Skipping group ${groupname}. Not found in the mapping file.`
+      );
+    }
   });
   return fnxns;
 }

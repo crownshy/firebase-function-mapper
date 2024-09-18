@@ -20,7 +20,16 @@ describe("files specfied", () => {
       "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest"
     );
   });
-  // TODO no files behind --files, nonexistent filename, etc
+
+  it("should ignore unmapped files", function () {
+    const filenames =
+      "client/functions/lib/functions/on_firestore/on_discussion_thread_comment.dart client/functions/lib/functions/on_call/resolve_join_request.dart client/functions/utils/notification_utils.dart";
+    const response = mapper.run(true, mapfile, filenames, "", "");
+    expect(response).to.equal(
+      "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest"
+    );
+  });
+  // TODO no files behind --files, etc
 });
 
 describe("groups specfied", () => {
@@ -39,7 +48,15 @@ describe("groups specfied", () => {
       "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto"
     );
   });
-  // TODO no groups behind --groups, nonexistent groupname, etc
+
+  it('should ignore unmapped group"', function () {
+    const groups = "discussion communities foo bar";
+    const response = mapper.run(true, mapfile, "", groups, "");
+    expect(response).to.equal(
+      "firebase deploy --force --only functions:DiscussionThreadCommentOnCreate,functions:DiscussionThreadCommentOnUpdate,functions:DiscussionThreadCommentOnDelete,functions:resolveJoinRequest,functions:createJunto"
+    );
+  });
+  // TODO no groups behind --groups, etc
 });
 
 describe("names specfied", () => {
